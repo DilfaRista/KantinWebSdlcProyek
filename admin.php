@@ -49,9 +49,9 @@ $products = $stmt->fetchAll();
             <ul>
                 <li><a href="admin.php" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
                 <li><a href="product_manage.php"><i class="fas fa-box"></i> Kelola Produk</a></li>
-                <li><a href="#"><i class="fas fa-list"></i> Kategori</a></li>
-                <li><a href="#"><i class="fas fa-shopping-bag"></i> Pesanan Masuk</a></li>
-                <li><a href="#"><i class="fas fa-users"></i> Data Pelanggan</a></li>
+                <li><a href="kategori.php"><i class="fas fa-list"></i> Kategori</a></li>
+                <li><a href="admin_pesanan.php"><i class="fas fa-list"></i> Pesanan Masuk</a></li>
+                <li><a href="pelanggan.php"><i class="fas fa-users"></i> Data Pelanggan</a></li>
                 <br>
                 <li><a href="logout.php" style="color: #ff6b6b;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
@@ -122,8 +122,12 @@ $products = $stmt->fetchAll();
                                 <?php endif; ?>
                             </td>
                             <td>
-                                <a href="#" class="btn-action btn-edit"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="btn-action btn-delete"><i class="fas fa-trash"></i></a>
+                                <a href="product_form.php?id=<?= $row['id'] ?>" class="btn-action btn-edit"><i class="fas fa-edit"></i></a>
+                                <a href="product_manage.php?action=delete&id=<?= $row['id'] ?>" 
+                                class="btn-action btn-delete" 
+                                onclick="return confirm('Yakin ingin menghapus menu ini?')">
+                                <i class="fas fa-trash"></i>
+                              </a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
