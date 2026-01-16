@@ -1,9 +1,9 @@
 <?php
 // Konfigurasi Database
-$host     = 'localhost';
-$db       = 'kantin_db';
-$user     = 'root';      // Default user XAMPP
-$password = '';          // Default password XAMPP (biasanya kosong)
+$host     = 'sql206.infinityfree.com';
+$db       = 'if0_40920647_kantin_db';
+$user     = 'if0_40920647';      // Default user XAMPP
+$password = 'soiU9ysCTEoIy5';          // Default password XAMPP (biasanya kosong)
 
 // Data Source Name (DSN)
 $dsn = "mysql:host=$host;dbname=$db;charset=utf8mb4";
