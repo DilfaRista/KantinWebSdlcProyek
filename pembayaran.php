@@ -109,7 +109,7 @@ $link_wa = "https://wa.me/62895631132041?text=$pesan_encoded";
         </div>
 
         <div class="qr-box">
-            <img src="qrisku.jpg" alt="Scan QRIS">
+            <img src="qris.jpg" alt="Scan QRIS">
             <p style="margin-top: 5px; font-size: 0.8rem; color: #555;">Scan QRIS untuk Bayar</p>
         </div>
 

@@ -5,16 +5,15 @@ include 'koneksi.php';
 // Atur Timezone
 date_default_timezone_set('Asia/Jakarta');
 
-// 1. CEK KEAMANAN (Pastikan yang login adalah user/customer)
+// 1. CEK KEAMANAN
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php"); // Atau index.php
+    header("Location: login.php");
     exit;
 }
 
 $user_id = $_SESSION['user_id'];
 
-// 2. AMBIL DATA PESANAN USER INI SAJA
-// Filter berdasarkan WHERE user_id = ?
+// 2. AMBIL DATA PESANAN
 $query = "SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC";
 $stmt = $pdo->prepare($query);
 $stmt->execute([$user_id]);
@@ -29,7 +28,6 @@ $my_orders = $stmt->fetchAll();
     <title>Riwayat Pesanan Saya - Kantinku</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* Menggunakan style dasar yang mirip agar konsisten */
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         
@@ -41,17 +39,14 @@ $my_orders = $stmt->fetchAll();
         /* Card Pesanan */
         .order-card { background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid #eee; overflow: hidden; }
         
-        /* Header Card (Status & ID) */
         .card-header { background: #fcfcfc; padding: 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
         .order-date { font-size: 0.8rem; color: #888; display: block; margin-top: 3px; }
         
-        /* Body Card (List Barang) */
         .card-body { padding: 15px; }
         .item-list { list-style: none; padding: 0; margin: 0; }
         .item-list li { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #f5f5f5; font-size: 0.95rem; color: #444; }
         .item-list li:last-child { border-bottom: none; }
         
-        /* Footer Card (Total) */
         .card-footer { background: #fafafa; padding: 12px 15px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
         .total-label { font-size: 0.9rem; color: #666; }
         .total-value { font-size: 1.1rem; font-weight: bold; color: #333; }
@@ -61,7 +56,26 @@ $my_orders = $stmt->fetchAll();
         .badge-unpaid { background: #ffebee; color: #d32f2f; border: 1px solid #ffcdd2; }
         .badge-paid { background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
 
-        /* Pesan Kosong */
+        /* CSS TOMBOL BAYAR MERAH */
+        .btn-bayar {
+            background-color: #d32f2f; /* Merah */
+            color: white !important;
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(211, 47, 47, 0.3);
+            border: 1px solid #b71c1c;
+            cursor: pointer;
+        }
+        .btn-bayar:hover {
+            background-color: #b71c1c;
+        }
+
         .empty-state { text-align: center; padding: 50px 20px; color: #999; }
         .empty-state i { font-size: 3rem; margin-bottom: 15px; opacity: 0.5; }
     </style>
@@ -88,9 +102,9 @@ $my_orders = $stmt->fetchAll();
 
     <?php foreach ($my_orders as $order): ?>
         <?php
-            // Normalisasi status
-            $status = strtolower($order['payment_status']);
-            $total = $order['total_amount']; // Sesuai database kamu
+            // Normalisasi status (ubah ke huruf kecil & hilangkan spasi jika ada)
+            $status = trim(strtolower($order['payment_status']));
+            $total = $order['total_amount']; 
         ?>
         
         <div class="order-card">
@@ -111,7 +125,6 @@ $my_orders = $stmt->fetchAll();
             <div class="card-body">
                 <ul class="item-list">
                     <?php
-                    // Ambil detail barang untuk order ini
                     $stmt_item = $pdo->prepare("SELECT order_items.*, products.name 
                                                 FROM order_items 
                                                 JOIN products ON order_items.product_id = products.id 
@@ -132,14 +145,26 @@ $my_orders = $stmt->fetchAll();
 
             <div class="card-footer">
                 <div>
-                    <?php if($status == 'unpaid'): ?>
-                        <small style="color: #d32f2f; font-style: italic;">*Silakan bayar di kasir</small>
+                    <?php 
+                    // PERBAIKAN LOGIKA DISINI:
+                    // Jika status TIDAK SAMA DENGAN 'paid', tampilkan tombol bayar.
+                    // Ini menangkap status 'unpaid', 'pending', '', atau NULL.
+                    if($status != 'paid'): 
+                    ?>
+                        
+                        <a href="pembayaran.php?id=<?= $order['id'] ?>" class="btn-bayar">
+                            <i class="fas fa-wallet"></i> Bayar Rp <?= number_format($total, 0, ',', '.') ?>
+                        </a>
+
                     <?php else: ?>
+                        
                         <small style="color: #2e7d32;">
-                            <i class="fas fa-check-circle"></i> Dibayar: <?= $order['paid_at'] ? date('H:i', strtotime($order['paid_at'])) : '' ?>
+                            <i class="fas fa-check-circle"></i> Lunas: <?= $order['paid_at'] ? date('H:i', strtotime($order['paid_at'])) : '-' ?>
                         </small>
+
                     <?php endif; ?>
                 </div>
+
                 <div>
                     <span class="total-label">Total:</span>
                     <span class="total-value">Rp <?= number_format($total, 0, ',', '.') ?></span>
