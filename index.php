@@ -123,7 +123,7 @@ function renderCard($row) {
                 <li><a href="index.php">Beranda</a></li>
                 <li><a href="logout.php" style="color: red;">Logout</a></li>
                 <a href="riwayat.php" class="tombol-riwayat">
-                <i class="fas fa-history"></i> Lihat Riwayat Pesanan</a>
+                <i class="fas fa-history"></i> Riwayat</a>
             </ul>
         </nav>
         

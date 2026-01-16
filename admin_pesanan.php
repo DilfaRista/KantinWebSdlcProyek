@@ -105,6 +105,7 @@ $orders = $stmt->fetchAll();
                 <li><a href="product_manage.php"><i class="fas fa-box"></i> Kelola Produk</a></li>
                 <li><a href="kategori.php"><i class="fas fa-list"></i> Kategori</a></li>
                 <li><a href="admin_pesanan.php" class="active"><i class="fas fa-receipt"></i> Pesanan Masuk</a></li>
+                <li><a href="admin_laporan.php"><i class="fas fa-chart-line"></i> Laporan</a></li>
                 <li><a href="pelanggan.php"><i class="fas fa-users"></i> Data Pelanggan</a></li>
                 <br>
                 <li><a href="logout.php" style="color: #ff6b6b;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
