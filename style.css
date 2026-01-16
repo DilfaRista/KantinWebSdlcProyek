@@ -32,8 +32,119 @@ header {
   font-weight: bold;
   font-size: 1.2rem;
 }
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
 
+/* Navigasi Desktop (Default) */
 nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+nav a {
+  text-decoration: none;
+  color: #555;
+  font-weight: bold;
+  font-size: 0.95rem;
+  transition: 0.3s;
+}
+nav a:hover {
+  color: #333;
+}
+
+/* Sembunyikan Info User Mobile di Desktop */
+.user-info-mobile {
+  display: none;
+}
+
+/* Cart Icon */
+.cart-wrapper {
+  position: relative;
+}
+.cart-icon {
+  background-color: #777;
+  color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  text-decoration: none;
+}
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  font-size: 0.7rem;
+  padding: 3px 6px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Tombol Burger (Sembunyi di Desktop) */
+.menu-toggle {
+  display: none; /* PENTING: Jangan muncul di laptop */
+  font-size: 1.4rem;
+  color: #555;
+  cursor: pointer;
+}
+
+/* --- RESPONSIVE MOBILE (HP) --- */
+@media screen and (max-width: 768px) {
+  /* 1. Munculkan Tombol Burger */
+  .menu-toggle {
+    display: block;
+  }
+
+  /* 2. Sembunyikan Menu Navigasi (Default) */
+  nav ul {
+    display: none; /* Hilang dulu */
+    flex-direction: column;
+    position: absolute;
+    top: 70px; /* Muncul pas di bawah header */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    gap: 0;
+  }
+
+  /* 3. Class Active (Dimunculkan via JS) */
+  nav ul.active {
+    display: flex;
+  }
+
+  nav li {
+    border-bottom: 1px solid #eee;
+    width: 100%;
+  }
+
+  nav a {
+    display: block;
+    padding: 15px;
+  }
+
+  /* Munculkan Info User di Mobile */
+  .user-info-mobile {
+    display: block;
+    padding: 15px;
+    background-color: #f8f8f8;
+    color: #777;
+    font-weight: bold;
+  }
+}
+/* nav ul {
   list-style: none;
   display: flex;
   gap: 20px;
@@ -56,7 +167,7 @@ nav a {
   justify-content: center;
   font-size: 0.9rem;
   cursor: pointer;
-}
+} */
 
 /* Main Layout */
 main {

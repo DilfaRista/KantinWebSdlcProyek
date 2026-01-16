@@ -114,27 +114,54 @@ function renderCard($row) {
     </style>
 </head>
 <body>
+Oke, saya paham. Masalah "kacau" di halaman Beranda (User) biasanya karena 2 hal:
+
+Struktur HTML salah: Kamu kehilangan pembungkus <header> sehingga Flexbox tidak jalan (elemen jadi berantakan/turun ke bawah).
+
+CSS Mobile vs Desktop bentrok: Tombol "Garis 3" (Hamburger) muncul di Desktop, atau Menu navigasi menumpuk dengan Logo.
+
+Mari kita Reset bagian Navbar ini agar rapi, responsif, dan garis 3-nya berfungsi.
+
+Ikuti 2 langkah ini:
+
+Langkah 1: Perbaiki index.php (Bagian Atas)
+Hapus semua kode dari <body> sampai <main> di index.php kamu, lalu GANTI dengan kode di bawah ini. Saya sudah menambahkan tag <header> yang hilang dan merapikan urutan elemennya.
+
+PHP
+
+<body>
 
     <header>
+        
         <div class="brand">KANTINKU</div>
+
         <nav>
-            <ul>
-                <li><a class="user-welcome">Hai, <?= htmlspecialchars($_SESSION['username']) ?></a></li>
-                <li><a href="index.php">Beranda</a></li>
-                <li><a href="logout.php" style="color: red;">Logout</a></li>
-                <a href="riwayat.php" class="tombol-riwayat">
-                <i class="fas fa-history"></i> Riwayat</a>
+            <ul id="nav-list">
+                <li class="user-info-mobile">Hai, <?= htmlspecialchars($_SESSION['username'] ?? 'User') ?></li>
+                
+                <li><a href="index.php"><i class="fas fa-home"></i> Beranda</a></li>
+                <li><a href="riwayat.php"><i class="fas fa-history"></i> Riwayat</a></li>
+                <li><a href="logout.php" style="color: #ff6b6b;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
         </nav>
-        
-        <div class="cart-wrapper">
-            <a href="keranjang.php" class="cart-icon">
-                <i class="fas fa-shopping-cart"></i>
-            </a>
-            <?php if($total_qty > 0): ?>
-                <span class="badge"><?= $total_qty ?></span>
-            <?php endif; ?>
+
+        <div class="header-right">
+            
+            <div class="cart-wrapper">
+                <a href="keranjang.php" class="cart-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+                <?php if(isset($total_qty) && $total_qty > 0): ?>
+                    <span class="badge"><?= $total_qty ?></span>
+                <?php endif; ?>
+            </div>
+
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
         </div>
+
     </header>
 
     <main>
@@ -214,6 +241,11 @@ function renderCard($row) {
     <footer>
         Copyright 2025 - Kantin Sekolah
     </footer>
-
+    <script>
+        function toggleMenu() {
+            const navList = document.getElementById('nav-list');
+            navList.classList.toggle('active');
+        }
+    </script>
 </body>
 </html>
